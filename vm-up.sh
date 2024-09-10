@@ -85,7 +85,7 @@ virsh list --all
 sleep 60
 
 # Создание Ansible inventory-файла
-cat <<EOF > ./ansible/inventory
+cat <<EOF > ./ansible/inventories/hosts
 # Задаю глобальные переменные для Ансиюл
 [all:vars]
 ansible_connection=ssh
@@ -95,7 +95,19 @@ ansible_port=22
 #не строго проверять ключи, для демонстрашки подходит
 ansible_ssh_common_args="-o StrictHostKeyChecking=no"
 
-# создаю две групы хостов
+# общая група хостов 
+[common:children]
+lemp
+elk
+
+# група хостов для LEMP-stack
+[lemp:children]
+ubu1
+
+# група хостов для ELK-stack
+[elk:children]
+ubu2
+
 # беру ip с созданных виртуалок, через агента внутри и убираю ip 127.*
 # и кладу их в группу хостов
 [ubu1]
@@ -105,5 +117,8 @@ $(virsh domifaddr ubu1 --source agent | grep ipv4 | awk '{print $4}' | grep -v '
 $(virsh domifaddr ubu2 --source agent | grep ipv4 | awk '{print $4}' | grep -v '^127\.' | cut -d'/' -f1)
 EOF
 
-# test ansible
-ansible all -m ping -i ./ansible/inventory
+# test ansible: ad-hoc ping
+ansible common -m ping -i ./ansible/inventories/hosts
+
+# cd ansible
+# ansible-playbook pb/infra-as-code.yml

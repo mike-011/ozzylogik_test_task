@@ -1,0 +1,19 @@
+---
+- name: Отключить вход по root
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+
+# - name: Запретить аутентификацию по паролю
+#   lineinfile:
+#     path: /etc/ssh/sshd_config
+#     regexp: '^PasswordAuthentication'
+#     line: 'PasswordAuthentication no'
+#     state: present
+
+- name: Перезапустить SSH
+  service:
+    name: ssh
+    state: restarted

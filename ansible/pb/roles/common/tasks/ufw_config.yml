@@ -1,0 +1,26 @@
+---
+- name: Установить UFW
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Разрешить нужные порты
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items:
+    - 22
+    - 80
+    - 443
+
+- name: Закрыть все порты по умолчанию
+  ufw:
+    rule: deny
+    direction: in
+
+- name: Включить UFW
+  ufw:
+    state: enabled
+    # enabled: yes

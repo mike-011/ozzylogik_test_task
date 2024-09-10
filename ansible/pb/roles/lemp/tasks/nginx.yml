@@ -1,0 +1,6 @@
+---
+- name: Включить и запустить Nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes

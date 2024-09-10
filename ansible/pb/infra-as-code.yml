@@ -1,0 +1,15 @@
+---
+  - name: Setup LEMP + ELK
+    hosts: common elk lemp
+    become: yes
+
+    roles: 
+      - { role: common, when: "'common' in {{ group_names }} " }
+      - { role: elk,    when: "'elk'    in {{ group_names }} " }
+      - { role: lemp,   when: "'lemp'   in {{ group_names }} " }
+
+
+
+# Known issues:
+# - annoying ansible warning "[WARNING]: conditional statements should not include jinja2 templating delimiters such as {{ }} or {% %}. Found: 'group' in {{ group_names }}"
+# - the roles needs some improvements

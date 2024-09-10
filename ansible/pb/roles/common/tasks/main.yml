@@ -1,0 +1,10 @@
+---
+# tasks file for pb/roles/common
+
+- name: SSH Configuration
+  include_tasks: ssh_config.yml
+# OK on Ubuntu 22,24
+
+- name: UFW - Ubuntu Firewall Configuration
+  include_tasks: ufw_config.yml
+# OK on Ubuntu 22,24

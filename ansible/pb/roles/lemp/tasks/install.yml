@@ -1,0 +1,10 @@
+---
+- name: Установить LEMP стек
+  apt:
+    name:
+      - nginx
+      - mysql-server
+      - php-fpm
+      - php-mysql
+    state: present
+    update_cache: yes

@@ -1,0 +1,14 @@
+---
+# tasks file for pb/roles/lemp
+
+- name: LEMP Installating 
+  include_tasks: install.yml
+# OK on Ubuntu 22,24
+
+- name: NGINX UP Config
+  include_tasks: nginx.yml
+# OK on Ubuntu 22,24
+
+- name: MySQL UP Config
+  include_tasks: mysql.yml
+# OK on Ubuntu 22,24

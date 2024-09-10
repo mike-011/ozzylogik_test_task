@@ -1,0 +1,36 @@
+---
+- name: Установить goaccess
+  apt:
+    name : goaccess
+    state: latest
+    # update_cache: yes
+
+- name: check def nginx directory for GoAccess output
+  file:
+    path: /var/www/html
+    state: directory
+    mode: '0755'
+
+- name: Create systemd service for GoAccess
+  copy:
+    dest: /etc/systemd/system/goaccess.service
+    content: |
+      [Unit]
+      Description=GoAccess Real-Time Log Analyzer
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/bin/goaccess /var/log/nginx/access.log --log-format=COMBINED --real-time-html --output=/var/www/html/index.html
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Reload systemd daemon
+  command: systemctl daemon-reload
+
+- name: Start and enable GoAccess service
+  service:
+    name: goaccess
+    state: started
+    enabled: yes

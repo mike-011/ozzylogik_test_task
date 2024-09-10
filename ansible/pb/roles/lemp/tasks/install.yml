@@ -6,5 +6,6 @@
       - mysql-server
       - php-fpm
       - php-mysql
+      - mc
     state: present
     update_cache: yes

@@ -4,3 +4,44 @@
     name: nginx
     state: started
     enabled: yes
+
+- name:  config Nginx for PHP on def. host
+  copy:
+    dest: /etc/nginx/sites-available/default
+    content: |
+      server {
+          listen 80 default_server;
+          listen [::]:80 default_server;
+          
+          root /var/www/html;
+          index index.php index.html index.htm index.nginx-debian.html;
+          
+          server_name _;
+
+          location / {
+              try_files $uri $uri/ =404;
+          }
+
+          location ~ \.php$ {
+              include snippets/fastcgi-php.conf;
+              fastcgi_pass unix:/var/run/php/php-fpm.sock;
+          }
+
+          location ~ /\.ht {
+              deny all;
+          }
+      }
+
+- name: Создать тестовый PHP файл info.php
+  copy:
+    dest: /var/www/html/phpinfo.php
+    content: |
+      <?php
+      phpinfo();
+      ?>
+    mode: '0644'
+
+- name: Перезапустить Nginx для применения настроек
+  service:
+    name: nginx
+    state: restarted

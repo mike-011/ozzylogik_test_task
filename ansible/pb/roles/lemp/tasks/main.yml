@@ -12,3 +12,7 @@
 - name: MySQL UP Config
   include_tasks: mysql.yml
 # OK on Ubuntu 22,24
+
+- name: Goaccess setuping 
+  include_tasks: goaccess.yml
+# OK on Ubuntu 22,24

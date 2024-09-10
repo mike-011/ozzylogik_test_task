@@ -7,5 +7,6 @@
       - php-fpm
       - php-mysql
       - mc
+      - python3-pymysql
     state: present
     update_cache: yes

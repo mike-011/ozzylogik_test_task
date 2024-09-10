@@ -1,0 +1,13 @@
+---
+- name: Установить Adminer для MySQL
+  apt:
+    name: adminer
+    state: present
+    update_cache: yes
+
+- name: Включить Adminer в Nginx
+  file:
+    src: /usr/share/adminer/adminer.php
+    dest: /var/www/html/adminer.php
+    state: link
+

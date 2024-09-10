@@ -1,6 +1,35 @@
 ---
-- name: Включить и запустить MySQL
-  service:
-    name: mysql
-    state: started
-    enabled: yes
+- name: Chkeck PyMySQL package
+  apt:
+    name: python3-pymysql
+    state: present
+    update_cache: yes
+
+- name: Настраиваю MySQL root для аутентификации по паролю
+  mysql_user:
+    name: root
+    host: localhost
+    password: "ozzypass"
+    priv: '*.*:ALL,GRANT'
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Creating MySQL user - ozzyuser/ozzypass с правами rootа
+  mysql_user:
+    name: ozzyuser
+    password: ozzypass
+    priv: "*.*:ALL,GRANT"
+    host: localhost
+    state: present
+    login_user: root
+    login_password: "ozzypass"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create BD "ozzybd"
+  mysql_db:
+    name: ozzybd
+    state: present
+    login_user: root
+    login_password: "ozzypass"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+

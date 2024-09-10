@@ -3,16 +3,20 @@
 
 - name: LEMP Installating 
   include_tasks: install.yml
-# OK on Ubuntu 22,24
+# OK on Ubuntu 24
 
 - name: NGINX UP Config
   include_tasks: nginx.yml
-# OK on Ubuntu 22,24
-
-- name: MySQL UP Config
-  include_tasks: mysql.yml
-# OK on Ubuntu 22,24
+# OK on Ubuntu 24
 
 - name: Goaccess setuping 
   include_tasks: goaccess.yml
-# OK on Ubuntu 22,24
+# OK on Ubuntu 24
+
+- name: Adminer MySQL UP
+  include_tasks: mysql-adminer.yml
+# OK on Ubuntu 24
+
+- name: MySQL UP Config
+  include_tasks: mysql.yml
+# OK on Ubuntu 24

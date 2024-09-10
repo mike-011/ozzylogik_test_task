@@ -32,7 +32,7 @@
           }
       }
 
-- name: Создать тестовый PHP файл info.php
+- name: Создать тестовый PHP файл phpinfo.php
   copy:
     dest: /var/www/html/phpinfo.php
     content: |

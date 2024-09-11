@@ -5,10 +5,6 @@
 
     roles: 
       - { role: common, when: "'common' in {{ group_names }} " }
-      - { role: lemp,   when: "'lemp'   in {{ group_names }} " }
-      - { role: elk,    when: "'elk'    in {{ group_names }} " }
-
-
 
 
 # Known issues:

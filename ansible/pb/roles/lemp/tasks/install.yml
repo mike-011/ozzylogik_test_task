@@ -10,3 +10,20 @@
       - python3-pymysql
     state: present
     update_cache: yes
+
+- name: Установить необходимые зависимости
+  apt:
+    name: apt-transport-https
+    state: present
+    update_cache: yes
+
+- name: Добавить Elasticsearch PGP ключ
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Добавить репозиторий Elasticsearch
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+    state: present
+    update_cache: yes

@@ -1,2 +1,17 @@
 ---
 # handlers file for pb/roles/elk
+
+- name: Перезапустить Elasticsearch
+  service:
+    name: elasticsearch
+    state: restarted
+
+- name: Перезапустить Logstash
+  service:
+    name: logstash
+    state: restarted
+
+- name: Перезапустить Kibana
+  service:
+    name: kibana
+    state: restarted

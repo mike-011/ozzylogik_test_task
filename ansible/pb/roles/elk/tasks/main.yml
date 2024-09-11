@@ -1,2 +1,176 @@
 ---
 # tasks file for pb/roles/elk
+- name: Установить необходимые зависимости
+  apt:
+    name: apt-transport-https
+    state: present
+    update_cache: yes
+
+- name: Добавить Elasticsearch PGP ключ
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Добавить репозиторий Elasticsearch
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+    state: present
+    update_cache: yes
+
+- name: Установить Elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Установить Logstash
+  apt:
+    name: logstash
+    state: present
+    update_cache: yes
+
+- name: Установить Kibana
+  apt:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: Изменить конфигурацию Kibana для прослушивания на 0.0.0.0
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: '^#?server.host:'
+    line: 'server.host: "0.0.0.0"'
+    state: present
+
+- name: Запустить и включить Elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: Запустить и включить Logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes
+
+- name: Запустить и включить Kibana
+  service:
+    name: kibana
+    state: started
+    enabled: yes
+
+
+# - name: Установить необходимые зависимости
+#   apt:
+#     name: apt-transport-https
+#     state: present
+#     update_cache: yes
+
+# - name: Добавить Elasticsearch PGP ключ
+#   apt_key:
+#     url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+#     state: present
+
+# - name: Добавить репозиторий Elasticsearch
+#   apt_repository:
+#     repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+#     state: present
+#     update_cache: yes
+
+# - name: Установить Elasticsearch
+#   apt:
+#     name: elasticsearch
+#     state: present
+#     update_cache: yes
+
+# - name: Установить Logstash
+#   apt:
+#     name: logstash
+#     state: present
+#     update_cache: yes
+
+# - name: Установить Kibana
+#   apt:
+#     name: kibana
+#     state: present
+#     update_cache: yes
+
+# - name: Запустить и включить Elasticsearch
+#   service:
+#     name: elasticsearch
+#     state: started
+#     enabled: yes
+
+# - name: Запустить и включить Logstash
+#   service:
+#     name: logstash
+#     state: started
+#     enabled: yes
+
+# - name: Запустить и включить Kibana
+#   service:
+#     name: kibana
+#     state: started
+#     enabled: yes
+
+# - name: Настроить Logstash для мониторинга логов Nginx с ubu1
+#   copy:
+#     dest: /etc/logstash/conf.d/logstash-nginx.conf
+#     content: |
+#       input {
+#         beats {
+#           port => 5044
+#         }
+#       }
+
+#       filter {
+#         grok {
+#           match => { "message" => "%{COMMONAPACHELOG}" }
+#         }
+#       }
+
+#       output {
+#         elasticsearch {
+#           hosts => ["localhost:9200"]
+#         }
+#       }
+
+- name: restarting Logstash
+  service:
+    name: logstash
+    state: restarted
+
+- name: restarting Elasticsearch
+  service:
+    name: elasticsearch
+    state: restarted
+
+- name: restarting Kibana
+  service:
+    name: kibana
+    state: restarted
+
+- name: Сгенерировать enrollment token для Kibana
+  command: /usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana
+  register: kibana_enrollment_token
+
+- name: Вывести enrollment token
+  debug:
+    msg: "Kibana enrollment token: {{ kibana_enrollment_token.stdout }}"
+
+# - name: Получить верификационный код для Kibana
+#   command: /usr/share/kibana/bin/kibana-verification-code
+#   register: kibana_verification_code
+
+# - name: Вывести верификационный код
+#   debug:
+#     msg: "Kibana verification code: {{ kibana_verification_code.stdout }}"
+
+# - name: Сбросить пароль пользователя elastic
+#   command: /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic -s
+#   register: elastic_password
+
+# - name: Вывести новый пароль пользователя elastic
+#   debug:
+#     msg: "New elastic password: {{ elastic_password.stdout }}"

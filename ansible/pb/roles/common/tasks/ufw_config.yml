@@ -14,6 +14,9 @@
     - 22
     - 80
     - 443
+    - 5044 # ELK beats
+    - 9200 # ELK elasticsearch
+    - 5601 # ELK web
 
 - name: Закрыть все порты по умолчанию
   ufw:
@@ -24,3 +27,9 @@
   ufw:
     state: enabled
     # enabled: yes
+
+- name: reloaded UFW
+  ufw:
+    state: reloaded
+    # enabled: yes
+

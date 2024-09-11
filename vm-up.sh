@@ -63,7 +63,7 @@ for i in 1 2; do
     RAM=2048  # 2 GB RAM для ubu1
     VCPUS=2   # 2 ядра CPU для ubu1
   else
-    RAM=4096  # 4 GB RAM для ubu2
+    RAM=6144  # 4 GB RAM для ubu2
     VCPUS=4   # 4 ядра CPU для ubu2
   fi
 

@@ -1,2 +1,13 @@
 ---
 # handlers file for pb/roles/lemp
+
+- name: Перезапустить Nginx для применения настроек
+  service:
+    name: nginx
+    state: restarted
+
+- name: reStart GoAccess service
+  service:
+    name: goaccess
+    state: restarted
+    

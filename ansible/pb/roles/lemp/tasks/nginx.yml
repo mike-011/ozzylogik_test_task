@@ -50,6 +50,13 @@
     mode  : u=rw,g=r,o=r # '0644'
     backup: yes 
 
+- name: Изменить формат логов в Nginx
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: '^(\s*)access_log /var/log/nginx/access.log;'
+    line: '	access_log /var/log/nginx/access.log combined;'
+    state: present
+
 - name: Перезапустить Nginx для применения настроек
   service:
     name: nginx

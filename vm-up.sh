@@ -120,10 +120,10 @@ ubu2
 # беру ip с созданных виртуалок, через агента внутри и убираю ip 127.*
 # и кладу их в группу хостов
 [ubu1]
-$(virsh domifaddr ubu1 --source agent | grep ipv4 | awk '{print $4}' | grep -v '^127\.' | cut -d'/' -f1)
+ubu1 ansible_host=$(virsh domifaddr ubu1 --source agent | grep ipv4 | awk '{print $4}' | grep -v '^127\.' | cut -d'/' -f1)
 
 [ubu2]
-$(virsh domifaddr ubu2 --source agent | grep ipv4 | awk '{print $4}' | grep -v '^127\.' | cut -d'/' -f1)
+ubu2 ansible_host=$(virsh domifaddr ubu2 --source agent | grep ipv4 | awk '{print $4}' | grep -v '^127\.' | cut -d'/' -f1)
 EOF
 
 # test ansible: ad-hoc ping

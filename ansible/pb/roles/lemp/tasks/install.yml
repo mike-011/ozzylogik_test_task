@@ -27,3 +27,31 @@
     repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
     state: present
     update_cache: yes
+
+- name: Установить ELK Filebeat
+  apt:
+    name: filebeat
+    state: present
+    update_cache: yes
+
+- name: Настроить ELK Filebeat для отправки логов Nginx на ELK
+  copy:
+    dest: /etc/filebeat/filebeat.yml
+    content: |
+      filebeat.inputs:
+      - type: log
+        enabled: true
+        paths:
+          - /var/log/nginx/access.log
+          - /var/log/nginx/error.log
+
+      output.logstash:
+        hosts: ["{{ hostvars['ubu2']['ansible_default_ipv4']['address'] }}:5044"]
+  # when: "'ubu2' in groups['elk']"
+
+
+- name: Включить и запустить Filebeat
+  service:
+    name: filebeat
+    state: started
+    enabled: yes

@@ -20,7 +20,7 @@
       After=network.target
 
       [Service]
-      ExecStart=/usr/bin/goaccess /var/log/nginx/access.log --log-format=COMBINED --real-time-html --output=/var/www/html/index.html
+      ExecStart=/usr/bin/goaccess /var/log/nginx/access.log --log-format=COMBINED --real-time-html --output=/var/www/html/goaccess.html
       Restart=on-failure
 
       [Install]

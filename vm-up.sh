@@ -58,11 +58,20 @@ for i in 1 2; do
   # Увеличение размера виртуального диска до 10 ГБ
   qemu-img resize ${IMGPATH}/${VM_NAME}.qcow2 10G
 
-  # Создаем виртуальные машины QEMU
+  # Определение параметров CPU и RAM для каждой ВМ
+  if [ "$i" -eq 1 ]; then
+    RAM=2048  # 2 GB RAM для ubu1
+    VCPUS=2   # 2 ядра CPU для ubu1
+  else
+    RAM=4096  # 4 GB RAM для ubu2
+    VCPUS=4   # 4 ядра CPU для ubu2
+  fi
+
+  # Создание виртуальной машины с заданными параметрами
   virt-install \
     --name ${VM_NAME} \
-    --ram 2048 \
-    --vcpus 2 \
+    --ram $RAM \
+    --vcpus $VCPUS \
     --disk path=${IMGPATH}/${VM_NAME}.qcow2 \
     --disk path=${CLOUD_INIT_PATH}/seed.img,device=cdrom \
     --os-variant ubuntu24.04 \

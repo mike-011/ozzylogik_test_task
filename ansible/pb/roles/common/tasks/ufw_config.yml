@@ -17,6 +17,7 @@
     - 5044 # ELK beats
     - 9200 # ELK elasticsearch
     - 5601 # ELK web
+    - 7890 # goaccess
 
 - name: Закрыть все порты по умолчанию
   ufw:

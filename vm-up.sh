@@ -63,7 +63,7 @@ for i in 1 2; do
     RAM=2048  # 2 GB RAM для ubu1
     VCPUS=2   # 2 ядра CPU для ubu1
   else
-    RAM=6144  # 4 GB RAM для ubu2
+    RAM=10240 # 10 GB RAM для ubu2
     VCPUS=4   # 4 ядра CPU для ubu2
   fi
 
@@ -129,5 +129,5 @@ EOF
 # test ansible: ad-hoc ping
 ansible common -m ping -i ./ansible/inventories/hosts
 
-# cd ansible
-# ansible-playbook pb/infra-as-code.yml
+cd ansible
+ansible-playbook pb/infra-as-code.yml

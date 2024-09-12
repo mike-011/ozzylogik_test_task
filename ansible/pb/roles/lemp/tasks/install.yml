@@ -8,6 +8,7 @@
       - php-mysql
       - mc
       - python3-pymysql
+      - net-tools
     state: present
     update_cache: yes
 
